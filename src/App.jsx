@@ -1,37 +1,30 @@
-import ReactImg from './assets/react-core-concepts.png'
-import CORE_CONCEPTS from './data'
+import {useState} from 'react';
 
-function Header(){
-  return (
-    <header>
-    <img src={ReactImg} alt="Stylized atom" />
-    <h1>React Essentials</h1>
-    <p>
-      Fundamental React concepts you will need for almost any app you are
-      going to build!
-    </p>
-  </header>
-  );
-}
+import { CORE_CONCEPTS } from './data.js'
+import { EXAMPLES } from './data.js';
 
-function CoreConcept(props) {
-  return(
-     <li>
-      <img src={props.image} alt={props.title} />
-      <h3>{props.title}</h3>
-      <p>{props.description}</p>
-     </li>
-
-  );
-}
+import Header from './components/Header/Header.jsx';
+import CoreConcept from './components/CoreConcept.jsx';
+import TabButton from './components/TabButton.jsx';
 
 
 
 function App() {
+
+const [selectTopics,setSelectTopics]=useState('components');
+
+    function handlerSelect(selectedButton){
+      //selectedButton ==> 'components','jsx','props','state'
+      setSelectTopics(selectedButton);
+      console.log(selectTopics);
+      
+    }
+    console.log('APP COMPONENT EXECUTING');
+    
   return (
+    <>
     <div>
-      <Header/>
-      <Header/>
+      <Header />
       <main>
         <section id="core-concepts">
           <h2>Core Concepts</h2>
@@ -48,10 +41,25 @@ function App() {
             />
           </ul>
         </section>
-        <h2>Time to get started!</h2>
+        <section id='examples'>
+          <h2>Examples</h2>
+          <menu>
+           <TabButton onSelect={()=>handlerSelect('components')}>Components</TabButton>
+           <TabButton onSelect={()=>handlerSelect('jsx')}>Jsx</TabButton>
+           <TabButton onSelect={()=>handlerSelect('props')}>Props</TabButton>
+           <TabButton onSelect={()=>handlerSelect('state')}>State</TabButton>
+          </menu>
+          <div id='tab-content'>
+            <h3>{EXAMPLES[selectTopics].title}</h3>
+            <p>{EXAMPLES[selectTopics].description}</p>
+            <pre>
+              <code>{EXAMPLES[selectTopics].code}</code>
+            </pre>
+          </div>
+        </section>
       </main>
     </div>
+    </>
   );
 }
-
 export default App;
